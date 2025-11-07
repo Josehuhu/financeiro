@@ -187,3 +187,53 @@
 html {
   font-size: var(--font-size);
 }
+
+/* Calendar popover specific styles */
+[data-radix-popper-content-wrapper] {
+  z-index: 9999 !important;
+}
+
+/* Fix pointer events for icons in buttons */
+button svg {
+  pointer-events: auto !important;
+}
+
+/* Fix dialog content to allow interactions */
+[data-slot="dialog-content"] {
+  pointer-events: auto !important;
+  z-index: 51 !important;
+}
+
+/* Ensure popover content is above dialog */
+[data-radix-popover-content-wrapper] {
+  z-index: 9999 !important;
+  pointer-events: auto !important;
+}
+
+/* Ensure calendar interactions work properly */
+.rdp-day {
+  cursor: pointer !important;
+}
+
+.rdp-day:hover {
+  background-color: var(--accent) !important;
+  color: var(--accent-foreground) !important;
+}
+
+.rdp-day_selected {
+  background-color: var(--primary) !important;
+  color: var(--primary-foreground) !important;
+}
+
+.rdp-day_disabled {
+  cursor: not-allowed !important;
+  opacity: 0.5 !important;
+}
+
+.rdp-button {
+  cursor: pointer !important;
+}
+
+.rdp-button:hover {
+  opacity: 1 !important;
+}

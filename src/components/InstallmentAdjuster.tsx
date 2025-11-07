@@ -2,13 +2,11 @@ import { useState, useEffect } from 'react';
 import { Input } from './ui/input';
 import { Label } from './ui/label';
 import { Alert, AlertDescription } from './ui/alert';
-import { AlertCircle, CheckCircle2, CalendarIcon } from 'lucide-react';
+import { AlertCircle, CheckCircle2 } from 'lucide-react';
 import { formatCurrency, formatDate } from '../utils/formatters';
 import { validateCustomInstallments } from '../utils/installmentCalculator';
 import type { InstallmentCalculation } from '../utils/installmentCalculator';
-import { Calendar } from './ui/calendar';
-import { Popover, PopoverContent, PopoverTrigger } from './ui/popover';
-import { Button } from './ui/button';
+import { DateButtonInput } from './ui/date-button-input';
 
 interface InstallmentAdjusterProps {
   installments: InstallmentCalculation[];
@@ -67,30 +65,18 @@ export function InstallmentAdjuster({ installments, totalValue, onUpdate }: Inst
                 onChange={(e) => handleValueChange(index, e.target.value)}
                 className="font-mono"
               />
-              <Popover>
-                <PopoverTrigger asChild>
-                  <Button variant="outline" className="w-full justify-start text-left">
-                    <CalendarIcon className="mr-2 h-4 w-4" />
-                    {formatDate(dates[index])}
-                  </Button>
-                </PopoverTrigger>
-                <PopoverContent className="w-auto p-0" align="start">
-                  <Calendar
-                    mode="single"
-                    selected={dates[index]}
-                    onSelect={(date: Date | undefined) => {
-                      if (date) {
-                        const newDates = [...dates];
-                        newDates[index] = date;
-                        setDates(newDates);
-                        // Forçar a atualização imediata
-                        onUpdate(values, newDates);
-                      }
-                    }}
-                    initialFocus
-                  />
-                </PopoverContent>
-              </Popover>
+              <DateButtonInput
+                value={dates[index]}
+                onChange={(date) => {
+                  const newDates = [...dates];
+                  newDates[index] = date;
+                  setDates(newDates);
+                  // Forçar a atualização imediata
+                  onUpdate(values, newDates);
+                }}
+                min={new Date()}
+                className="w-full"
+              />
             </div>
           </div>
         ))}

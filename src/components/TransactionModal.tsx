@@ -5,12 +5,12 @@ import { Input } from './ui/input';
 import { Label } from './ui/label';
 import { Textarea } from './ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select';
-import { Calendar } from './ui/calendar';
-import { Popover, PopoverContent, PopoverTrigger } from './ui/popover';
+
 import { Switch } from './ui/switch';
 import { Alert, AlertDescription } from './ui/alert';
-import { CalendarIcon, AlertCircle } from 'lucide-react';
+import { AlertCircle, PlusIcon } from 'lucide-react';
 import { formatCurrency, formatDate, formatInstallment } from '../utils/formatters';
+import { DateButtonInput } from './ui/date-button-input';
 import { calculateInstallments } from '../utils/installmentCalculator';
 import { validateName, validateDescription, validateValue, validateInstallmentCount, validateDate } from '../utils/validators';
 import { InstallmentAdjuster } from './InstallmentAdjuster';
@@ -246,35 +246,23 @@ export function TransactionModal({ isOpen, onClose, onSubmit, initialData, isLoa
               </div>
 
               <div className="space-y-2">
-                <Label>Data de Início *</Label>
-                <Popover>
-                  <PopoverTrigger asChild>
-                    <Button variant="outline" className="w-full justify-start text-left">
-                      <CalendarIcon className="mr-2 h-4 w-4" />
-                      {formatDate(formData.startDate)}
-                    </Button>
-                  </PopoverTrigger>
-                  <PopoverContent className="w-auto p-0" side="bottom" align="start" sideOffset={4}>
-                    <Calendar
-                      mode="single"
-                      selected={formData.startDate}
-                      onSelect={(date: Date | undefined) => {
-                        if (date) {
-                          setFormData({ 
-                            ...formData, 
-                            startDate: date,
-                            // Resetar as datas customizadas quando a data inicial muda
-                            customDates: undefined
-                          });
-                          setUseCustomInstallments(false);
-                          setCustomInstallmentValues([]);
-                        }
-                      }}
-                      initialFocus
-                      className="rounded-md border"
-                    />
-                  </PopoverContent>
-                </Popover>
+                <DateButtonInput
+                  id="startDate"
+                  label="Data de Início *"
+                  value={formData.startDate}
+                  onChange={(date) => {
+                    setFormData({ 
+                      ...formData, 
+                      startDate: date,
+                      // Resetar as datas customizadas quando a data inicial muda
+                      customDates: undefined
+                    });
+                    setUseCustomInstallments(false);
+                    setCustomInstallmentValues([]);
+                  }}
+                  min={new Date()}
+                  className="w-full"
+                />
                 {errors.startDate && (
                   <p className="text-sm text-destructive">{errors.startDate}</p>
                 )}
