@@ -12,6 +12,7 @@ export interface Transaction {
   updatedAt: Date;
   createdBy: string; // email do usuário
   createdByName: string; // nome do usuário
+  customDates?: Date[]; // datas personalizadas das parcelas
 }
 
 export interface Installment {

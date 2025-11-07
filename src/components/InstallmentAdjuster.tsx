@@ -28,7 +28,9 @@ export function InstallmentAdjuster({ installments, totalValue, onUpdate }: Inst
   useEffect(() => {
     setValues(installments.map(i => i.value));
     setDates(installments.map(i => i.dueDate));
-  }, [installments]);
+    // Notificar o componente pai das alterações
+    onUpdate(installments.map(i => i.value), installments.map(i => i.dueDate));
+  }, [installments, onUpdate]);
 
   useEffect(() => {
     const result = validateCustomInstallments(values, totalValue);
@@ -81,9 +83,12 @@ export function InstallmentAdjuster({ installments, totalValue, onUpdate }: Inst
                         const newDates = [...dates];
                         newDates[index] = date;
                         setDates(newDates);
+                        // Forçar a atualização imediata
+                        onUpdate(values, newDates);
                       }
                     }}
                     initialFocus
+                    disabled={false}
                   />
                 </PopoverContent>
               </Popover>

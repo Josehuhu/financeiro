@@ -47,6 +47,8 @@ export function TransactionModal({ isOpen, onClose, onSubmit, initialData, isLoa
         totalValue: initialData.totalValue,
         installmentCount: initialData.installmentCount,
         startDate: new Date(initialData.startDate),
+        // Preservar as datas customizadas se existirem
+        customDates: initialData.customDates?.map((d: Date) => new Date(d)),
       });
     } else {
       // Reset form
@@ -130,6 +132,7 @@ export function TransactionModal({ isOpen, onClose, onSubmit, initialData, isLoa
     const dataToSubmit: TransactionFormData = {
       ...formData,
       customInstallments: useCustomInstallments ? customInstallmentValues : undefined,
+      customDates: useCustomInstallments ? formData.customDates : undefined,
     };
     onSubmit(dataToSubmit);
   };
@@ -244,7 +247,7 @@ export function TransactionModal({ isOpen, onClose, onSubmit, initialData, isLoa
 
               <div className="space-y-2">
                 <Label>Data de Início *</Label>
-                <Popover>
+                    <Popover>
                   <PopoverTrigger asChild>
                     <Button variant="outline" className="w-full justify-start text-left">
                       <CalendarIcon className="mr-2 h-4 w-4" />
@@ -255,8 +258,20 @@ export function TransactionModal({ isOpen, onClose, onSubmit, initialData, isLoa
                     <Calendar
                       mode="single"
                       selected={formData.startDate}
-                      onSelect={(date: Date | undefined) => date && setFormData({ ...formData, startDate: date })}
+                      onSelect={(date: Date | undefined) => {
+                        if (date) {
+                          setFormData({ 
+                            ...formData, 
+                            startDate: date,
+                            // Resetar as datas customizadas quando a data inicial muda
+                            customDates: undefined
+                          });
+                          setUseCustomInstallments(false);
+                          setCustomInstallmentValues([]);
+                        }
+                      }}
                       initialFocus
+                      disabled={false}
                     />
                   </PopoverContent>
                 </Popover>
