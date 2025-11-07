@@ -247,14 +247,14 @@ export function TransactionModal({ isOpen, onClose, onSubmit, initialData, isLoa
 
               <div className="space-y-2">
                 <Label>Data de Início *</Label>
-                    <Popover>
+                <Popover>
                   <PopoverTrigger asChild>
                     <Button variant="outline" className="w-full justify-start text-left">
                       <CalendarIcon className="mr-2 h-4 w-4" />
                       {formatDate(formData.startDate)}
                     </Button>
                   </PopoverTrigger>
-                  <PopoverContent className="w-auto p-0" align="start">
+                  <PopoverContent className="w-auto p-0" side="bottom" align="start" sideOffset={4}>
                     <Calendar
                       mode="single"
                       selected={formData.startDate}
@@ -271,6 +271,7 @@ export function TransactionModal({ isOpen, onClose, onSubmit, initialData, isLoa
                         }
                       }}
                       initialFocus
+                      className="rounded-md border"
                     />
                   </PopoverContent>
                 </Popover>
