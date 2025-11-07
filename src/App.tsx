@@ -19,6 +19,7 @@ import { addMonths } from './utils/formatters';
 import type { Transaction, Installment, TransactionFormData } from './types';
 
 function AppContent() {
+  const { user } = useAuth();
   const {
     transactions,
     installments,
@@ -39,7 +40,6 @@ function AppContent() {
     setIsSubmitting(true);
 
     try {
-      const { user } = useAuth();
       if (!user) {
         throw new Error('User must be logged in to create transactions');
       }
@@ -100,7 +100,6 @@ function AppContent() {
 
   const handleEditTransaction = async (data: TransactionFormData) => {
     if (!editingTransaction) return;
-    const { user } = useAuth();
     if (!user) {
       throw new Error('User must be logged in to edit transactions');
     }
@@ -173,7 +172,6 @@ function AppContent() {
     const installment = installments.find((i) => i.id === installmentId);
     if (!installment) return;
 
-    const { user } = useAuth();
     if (!user) {
       throw new Error('User must be logged in to validate installments');
     }
@@ -210,7 +208,6 @@ function AppContent() {
             );
 
             if (!nextExists) {
-              const { user } = useAuth();
               if (!user) {
                 throw new Error('User must be logged in to create installments');
               }
