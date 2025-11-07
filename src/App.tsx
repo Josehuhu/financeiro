@@ -1,10 +1,12 @@
 "use client";
 import { useState } from 'react';
-import { Plus, TrendingUp } from 'lucide-react';
+import { Plus } from 'lucide-react';
 import { Button } from './components/ui/button';
 import { Toaster } from './components/ui/sonner';
 import { toast } from 'sonner';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from './components/ui/tabs';
+import { AuthProvider } from './contexts/AuthContext';
+import { ProtectedLayout } from './components/ProtectedLayout';
 import { TransactionTable } from './components/TransactionTable';
 import { TransactionModal } from './components/TransactionModal';
 import { FinancialChart } from './components/FinancialChart';
@@ -15,7 +17,7 @@ import { calculateInstallments } from './utils/installmentCalculator';
 import { addMonths } from './utils/formatters';
 import type { Transaction, Installment, TransactionFormData } from './types';
 
-function App() {
+function AppContent() {
   const {
     transactions,
     installments,
@@ -374,6 +376,16 @@ function App() {
         <Toaster position="top-right" richColors />
       </div>
     </div>
+  );
+}
+
+function App() {
+  return (
+    <AuthProvider>
+      <ProtectedLayout>
+        <AppContent />
+      </ProtectedLayout>
+    </AuthProvider>
   );
 }
 
