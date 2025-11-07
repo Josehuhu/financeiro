@@ -7,7 +7,6 @@ interface AuthContextType {
   session: Session | null;
   loading: boolean;
   signIn: (email: string, password: string) => Promise<void>;
-  signUp: (email: string, password: string) => Promise<void>;
   signOut: () => Promise<void>;
   error: string | null;
 }
@@ -51,20 +50,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   };
 
-  const signUp = async (email: string, password: string) => {
-    try {
-      setError(null);
-      const { error } = await supabase.auth.signUp({
-        email,
-        password,
-      });
-      if (error) throw error;
-    } catch (e) {
-      setError(e instanceof Error ? e.message : 'Error signing up');
-      throw e;
-    }
-  };
-
   const signOut = async () => {
     try {
       setError(null);
@@ -83,7 +68,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         session,
         loading,
         signIn,
-        signUp,
         signOut,
         error,
       }}

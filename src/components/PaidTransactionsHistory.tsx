@@ -48,6 +48,8 @@ export function PaidTransactionsHistory({ paidInstallments }: PaidTransactionsHi
                 <div className="flex items-center gap-4 mt-1 text-xs text-muted-foreground">
                   <span>Vencimento: {formatDate(item.dueDate)}</span>
                   {item.paidDate && <span>Pago em: {formatDate(item.paidDate)}</span>}
+                  <span>Criado por: {item.createdByName}</span>
+                  {item.validatedByName && <span>Validado por: {item.validatedByName}</span>}
                 </div>
               </div>
               <div className="text-right">

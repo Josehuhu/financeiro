@@ -10,6 +10,8 @@ export interface Transaction {
   startDate: Date;
   createdAt: Date;
   updatedAt: Date;
+  createdBy: string; // email do usuário
+  createdByName: string; // nome do usuário
 }
 
 export interface Installment {
@@ -26,6 +28,10 @@ export interface Installment {
   paidDate?: Date;
   createdAt: Date;
   updatedAt: Date;
+  createdBy: string; // email do usuário que criou
+  createdByName: string; // nome do usuário que criou
+  validatedBy?: string; // email do usuário que validou
+  validatedByName?: string; // nome do usuário que validou
 }
 
 export interface TransactionFormData {

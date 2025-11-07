@@ -11,8 +11,6 @@ interface ProtectedLayoutProps {
 
 export function ProtectedLayout({ children }: ProtectedLayoutProps) {
   const { user, loading, signOut } = useAuth();
-  const [authMode, setAuthMode] = useState<'login' | 'signup'>('login');
-
   // Show loading state
   if (loading) {
     return (
@@ -26,10 +24,7 @@ export function ProtectedLayout({ children }: ProtectedLayoutProps) {
   if (!user) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
-        <AuthForm
-          mode={authMode}
-          onToggleMode={() => setAuthMode(mode => mode === 'login' ? 'signup' : 'login')}
-        />
+        <AuthForm />
       </div>
     );
   }

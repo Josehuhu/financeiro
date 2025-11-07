@@ -7,27 +7,18 @@ import { Label } from './ui/label';
 import { Alert, AlertDescription } from './ui/alert';
 import { AlertCircle } from 'lucide-react';
 
-interface AuthFormProps {
-  mode: 'login' | 'signup';
-  onToggleMode: () => void;
-}
-
-export function AuthForm({ mode, onToggleMode }: AuthFormProps) {
+export function AuthForm() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
-  const { signIn, signUp, error } = useAuth();
+  const { signIn, error } = useAuth();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
 
     try {
-      if (mode === 'login') {
-        await signIn(email, password);
-      } else {
-        await signUp(email, password);
-      }
+      await signIn(email, password);
     } catch (error) {
       console.error('Authentication error:', error);
     } finally {
@@ -38,11 +29,9 @@ export function AuthForm({ mode, onToggleMode }: AuthFormProps) {
   return (
     <Card className="w-[400px]">
       <CardHeader>
-        <CardTitle>{mode === 'login' ? 'Login' : 'Criar Conta'}</CardTitle>
+        <CardTitle>Login</CardTitle>
         <CardDescription>
-          {mode === 'login'
-            ? 'Entre com seu e-mail e senha'
-            : 'Crie sua conta para começar'}
+          Entre com seu e-mail e senha
         </CardDescription>
       </CardHeader>
       <form onSubmit={handleSubmit}>
@@ -82,17 +71,7 @@ export function AuthForm({ mode, onToggleMode }: AuthFormProps) {
             className="w-full"
             disabled={loading}
           >
-            {loading ? 'Carregando...' : mode === 'login' ? 'Entrar' : 'Criar Conta'}
-          </Button>
-          <Button
-            type="button"
-            variant="link"
-            onClick={onToggleMode}
-            className="w-full"
-          >
-            {mode === 'login'
-              ? 'Não tem uma conta? Crie agora'
-              : 'Já tem uma conta? Entre aqui'}
+            {loading ? 'Carregando...' : 'Entrar'}
           </Button>
         </CardFooter>
       </form>

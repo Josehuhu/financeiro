@@ -2,6 +2,7 @@
 import { useState } from 'react';
 import { Plus } from 'lucide-react';
 import { Button } from './components/ui/button';
+import { useAuth } from './contexts/AuthContext';
 import { Toaster } from './components/ui/sonner';
 import { toast } from 'sonner';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from './components/ui/tabs';
@@ -38,6 +39,11 @@ function AppContent() {
     setIsSubmitting(true);
 
     try {
+      const { user } = useAuth();
+      if (!user) {
+        throw new Error('User must be logged in to create transactions');
+      }
+
       const newTransaction: Transaction = {
         id: `txn_${Date.now()}_${Math.random().toString(36).substring(7)}`,
         name: data.name,
@@ -48,6 +54,8 @@ function AppContent() {
         startDate: data.startDate,
         createdAt: new Date(),
         updatedAt: new Date(),
+        createdBy: user.email || 'unknown',
+        createdByName: user.user_metadata?.name || user.email || 'unknown',
       };
 
       // Calculate installments
@@ -75,6 +83,8 @@ function AppContent() {
           paid: false,
           createdAt: new Date(),
           updatedAt: new Date(),
+          createdBy: user.email || 'unknown',
+          createdByName: user.user_metadata?.name || user.email || 'unknown',
         }));
 
       await createTransaction(newTransaction, newInstallments);
@@ -90,6 +100,10 @@ function AppContent() {
 
   const handleEditTransaction = async (data: TransactionFormData) => {
     if (!editingTransaction) return;
+    const { user } = useAuth();
+    if (!user) {
+      throw new Error('User must be logged in to edit transactions');
+    }
 
     setIsSubmitting(true);
 
@@ -129,6 +143,8 @@ function AppContent() {
           paid: false,
           createdAt: new Date(),
           updatedAt: new Date(),
+          createdBy: user.email || 'unknown',
+          createdByName: user.user_metadata?.name || user.email || 'unknown',
         }));
 
       await updateTransaction(updatedTransaction, newInstallments);
@@ -157,11 +173,18 @@ function AppContent() {
     const installment = installments.find((i) => i.id === installmentId);
     if (!installment) return;
 
+    const { user } = useAuth();
+    if (!user) {
+      throw new Error('User must be logged in to validate installments');
+    }
+
     try {
       // Mark as paid
       await updateInstallment(installmentId, {
         paid: true,
         paidDate: new Date(),
+        validatedBy: user.email || 'unknown',
+        validatedByName: user.user_metadata?.name || user.email || 'unknown',
       });
 
       // Check if there's a next installment to create
@@ -187,6 +210,11 @@ function AppContent() {
             );
 
             if (!nextExists) {
+              const { user } = useAuth();
+              if (!user) {
+                throw new Error('User must be logged in to create installments');
+              }
+
               const nextInstallment: Installment = {
                 id: `inst_${transaction.id}_${nextInstallmentNumber}`,
                 transactionId: transaction.id,
@@ -200,6 +228,8 @@ function AppContent() {
                 paid: false,
                 createdAt: new Date(),
                 updatedAt: new Date(),
+                createdBy: user.email || 'unknown',
+                createdByName: user.user_metadata?.name || user.email || 'unknown',
               };
 
               await createInstallment(nextInstallment);

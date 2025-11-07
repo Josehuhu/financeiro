@@ -111,7 +111,7 @@ export function TransactionTable({ data, onEdit, onDelete, onValidate, isLoading
 
         <Select
           value={filters.type || 'all'}
-          onValueChange={(value) =>
+          onValueChange={(value: 'INCOME' | 'EXPENSE' | 'all') =>
             setFilters({ ...filters, type: value === 'all' ? undefined : (value as 'INCOME' | 'EXPENSE') })
           }
         >
@@ -167,13 +167,25 @@ export function TransactionTable({ data, onEdit, onDelete, onValidate, isLoading
                   <ArrowUpDown className="ml-2 h-4 w-4" />
                 </Button>
               </TableHead>
+              <TableHead>
+                <Button variant="ghost" onClick={() => handleSort('createdByName')} className="h-8 px-2">
+                  Criado por
+                  <ArrowUpDown className="ml-2 h-4 w-4" />
+                </Button>
+              </TableHead>
+              <TableHead>
+                <Button variant="ghost" onClick={() => handleSort('validatedByName')} className="h-8 px-2">
+                  Validado por
+                  <ArrowUpDown className="ml-2 h-4 w-4" />
+                </Button>
+              </TableHead>
               <TableHead className="text-right">Ações</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {paginatedData.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={7} className="text-center py-8 text-muted-foreground">
+                <TableCell colSpan={9} className="text-center py-8 text-muted-foreground">
                   Nenhuma transação encontrada
                 </TableCell>
               </TableRow>
@@ -196,6 +208,8 @@ export function TransactionTable({ data, onEdit, onDelete, onValidate, isLoading
                     {formatInstallment(item.installmentNumber, item.totalInstallments)}
                   </TableCell>
                   <TableCell>{formatDate(item.dueDate)}</TableCell>
+                  <TableCell>{item.createdByName || '-'}</TableCell>
+                  <TableCell>{item.validatedByName || '-'}</TableCell>
                   <TableCell className="text-right">
                     <div className="flex justify-end gap-2">
                       {!item.paid && (
