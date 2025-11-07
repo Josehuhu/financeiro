@@ -113,7 +113,8 @@ export function TransactionModal({ isOpen, onClose, onSubmit, initialData, isLoa
         formData.totalValue,
         formData.installmentCount,
         formData.startDate,
-        useCustomInstallments ? customInstallmentValues : undefined
+        useCustomInstallments ? customInstallmentValues : undefined,
+        useCustomInstallments ? formData.customDates : undefined
       );
       setStep(3);
     }
@@ -137,7 +138,8 @@ export function TransactionModal({ isOpen, onClose, onSubmit, initialData, isLoa
     formData.totalValue,
     formData.installmentCount,
     formData.startDate,
-    useCustomInstallments ? customInstallmentValues : undefined
+    useCustomInstallments ? customInstallmentValues : undefined,
+    useCustomInstallments ? formData.customDates : undefined
   );
 
   return (
@@ -174,7 +176,7 @@ export function TransactionModal({ isOpen, onClose, onSubmit, initialData, isLoa
                 <Label htmlFor="type">Tipo *</Label>
                 <Select
                   value={formData.type}
-                  onValueChange={(value) => setFormData({ ...formData, type: value as 'INCOME' | 'EXPENSE' })}
+                  onValueChange={(value: string) => setFormData({ ...formData, type: value as 'INCOME' | 'EXPENSE' })}
                 >
                   <SelectTrigger id="type">
                     <SelectValue />
@@ -253,7 +255,7 @@ export function TransactionModal({ isOpen, onClose, onSubmit, initialData, isLoa
                     <Calendar
                       mode="single"
                       selected={formData.startDate}
-                      onSelect={(date) => date && setFormData({ ...formData, startDate: date })}
+                      onSelect={(date: Date | undefined) => date && setFormData({ ...formData, startDate: date })}
                       initialFocus
                     />
                   </PopoverContent>
@@ -289,7 +291,12 @@ export function TransactionModal({ isOpen, onClose, onSubmit, initialData, isLoa
                     <InstallmentAdjuster
                       installments={calculatedInstallments}
                       totalValue={formData.totalValue}
-                      onUpdate={setCustomInstallmentValues}
+                      onUpdate={(values, dates) => {
+                        setCustomInstallmentValues(values);
+                        if (dates) {
+                          setFormData(prev => ({ ...prev, customDates: dates }));
+                        }
+                      }}
                     />
                   )}
                 </>

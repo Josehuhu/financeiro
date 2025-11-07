@@ -10,7 +10,8 @@ export const calculateInstallments = (
   totalValue: number,
   installmentCount: number,
   startDate: Date,
-  customValues?: number[]
+  customValues?: number[],
+  customDates?: Date[]
 ): InstallmentCalculation[] => {
   const installments: InstallmentCalculation[] = [];
 
@@ -20,7 +21,7 @@ export const calculateInstallments = (
       installments.push({
         installmentNumber: i + 1,
         value: customValues[i],
-        dueDate: addMonths(startDate, i),
+        dueDate: customDates && customDates[i] ? customDates[i] : addMonths(startDate, i),
       });
     }
   } else {

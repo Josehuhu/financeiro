@@ -42,6 +42,7 @@ export interface TransactionFormData {
   installmentCount: number;
   startDate: Date;
   customInstallments?: number[];
+  customDates?: Date[];
 }
 
 export interface TableFilters {
