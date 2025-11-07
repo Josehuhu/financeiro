@@ -334,7 +334,7 @@ function AppContent() {
             </div>
           </div>
           <div className="p-6 rounded-lg border bg-card">
-            <div className="text-sm text-muted-foreground mb-1">Resultado Pago</div>
+            <div className="text-sm text-muted-foreground mb-1">Saldo </div>
             <div className={paidBalance >= 0 ? 'text-green-600' : 'text-red-600'}>
               R$ {paidBalance.toFixed(2)}
             </div>
