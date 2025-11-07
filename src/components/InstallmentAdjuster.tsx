@@ -88,7 +88,6 @@ export function InstallmentAdjuster({ installments, totalValue, onUpdate }: Inst
                       }
                     }}
                     initialFocus
-                    disabled={false}
                   />
                 </PopoverContent>
               </Popover>

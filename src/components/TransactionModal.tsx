@@ -271,7 +271,6 @@ export function TransactionModal({ isOpen, onClose, onSubmit, initialData, isLoa
                         }
                       }}
                       initialFocus
-                      disabled={false}
                     />
                   </PopoverContent>
                 </Popover>
